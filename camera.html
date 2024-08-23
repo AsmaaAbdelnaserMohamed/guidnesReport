@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كاميرا</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f0f0f0;
+        }
+
+        .camera-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        canvas {
+            display: none;
+        }
+
+        .cameraIcon {
+            position: absolute;
+            bottom: 80px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .icon-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 100px;
+            height: 70px;
+            margin-top: 10px;
+        }
+
+        .icon-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .icon-button:hover img {
+            filter: brightness(0.8);
+        }
+
+        .switch-button {
+            background: #007bff;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: white;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .switch-button:hover {
+            background: #0056b3;
+        }
+
+        .request-number-input {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .request-number-input input {
+            padding: 10px;
+            font-size: 1rem;
+            width: 200px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="camera-container">
+        <video id="camera" autoplay></video>
+        <canvas id="capture"></canvas>
+        <div class="cameraIcon">
+            <button type="button" id="takePhoto" class="icon-button">
+                <img src="/images/camera_icon.png" alt="camera-icon">
+            </button>
+        </div>
+        <div class="request-number-input">
+            <input type="text" id="requestNumber" placeholder="رقم الطلب">
+        </div>
+        <button type="button" id="switchCamera" class="switch-button">تبديل الكاميرا</button>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestNumber = urlParams.get('requestNumber');
+        if (requestNumber) {
+            document.getElementById('requestNumber').value = requestNumber;
+        }
+
+        const video = document.getElementById('camera');
+        const canvas = document.getElementById('capture');
+        const takePhotoButton = document.getElementById('takePhoto');
+        const switchCameraButton = document.getElementById('switchCamera');
+        let stream;
+        let currentCamera = 'user'; // تبدأ بالكاميرا الأمامية
+
+        async function startCamera(cameraFacing) {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+
+            try {
+                const constraints = { video: { facingMode: cameraFacing } };
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = stream;
+            } catch (err) {
+                alert("خطأ في الوصول إلى الكاميرا: " + err.message);
+            }
+        }
+
+        startCamera(currentCamera);
+
+        switchCameraButton.addEventListener('click', function () {
+            currentCamera = currentCamera === 'user' ? 'environment' : 'user';
+            startCamera(currentCamera);
+        });
+
+        takePhotoButton.addEventListener('click', async function (event) {
+            event.preventDefault(); // منع السلوك الافتراضي للزر
+            const requestNumber = document.getElementById('requestNumber').value.trim();
+            if (!requestNumber) {
+                alert("يرجى إدخال رقم الطلب.");
+                return false;
+            }
+
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // تحويل الـ canvas إلى Blob باستخدام رد نداء
+            canvas.toBlob(function (blob) {
+                if (blob) {
+                    const fileName = `${requestNumber}.jpg`;
+                    const link = document.createElement('a');
+                    link.download = fileName;
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                } else {
+                    alert("خطأ في إنشاء ملف الصورة.");
+                }
+            }, 'image/jpg');
+        });
+    </script>
+</body>
+
+</html>

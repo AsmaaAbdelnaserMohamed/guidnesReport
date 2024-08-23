@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة بيانات الطلب</title>
+    <link rel="stylesheet" href="./fonts/all.min1.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .table-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-container input[type="text"] {
+            width: 100%;
+            /* max-width: 400px; */
+            text-align: center;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            direction: rtl;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            border: 2px solid #ddd;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .data-table th {
+            background-color: #e0f7fa;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+        }
+
+
+
+        .data-table th .sort-icon {
+            margin-left: 5px;
+        }
+
+        .data-table td {
+            background-color: #fff;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #e0f7fa;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin: 0 5px;
+        }
+
+        .pagination button.disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+
+        button.btn-guidance {
+            font-size: 16px;
+            background-color: green;
+            color: white;
+            border: 2px solid black;
+            border-radius: 6px;
+            padding: 6px;
+        }
+
+        th#sort-sector,
+        th#sort-ssec,
+        td:nth-child(ن) {
+            display: none;
+        }
+
+        .pagination {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding: 10px;
+                height: auto;
+                overflow: auto;
+            }
+
+            .table-container {
+                padding: 10px;
+                margin: 10px;
+                width: 100%;
+            }
+
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container input[type="text"] {
+                max-width: 100%;
+                font-size: 14px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            button.btn-guidance {
+                font-size: 14px;
+                padding: 4px;
+            }
+
+            .pagination button {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+        }
+
+
+
+        @media (max-width: 480px) {
+
+            .data-table th,
+            .data-table td {
+                padding: 5px;
+                font-size: 9px;
+                font-weight: bold;
+                text-wrap: nowrap;
+            }
+
+            .search-container input[type="text"] {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+
+
+            button.btn-guidance {
+                font-size: 12px;
+                padding: 4px;
+            }
+
+            .pagination button {
+                padding: 6px 10px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="table-container">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="بحث..." />
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th id="sort-requestnumber">رقم الطلب <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-requestid" style="display: none;">كود الطلب <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-applicantname">اسم مقدم الطلب <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-area" style="display: none;">المساحة طبقاً للطلب <span class="sort-icon">&#9662;</span>
+                    </th>
+                    <th id="sort-companyname">اسم الشركة المسئولة <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-sectorc" style="display: none;">كود القسم <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-ssecc" style="display: none;">كود الشياخة <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-sector">القسم <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-ssec">الشياخة <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-fullname" style="display: none;">اسم صاحب الطلب<span class="sort-icon">&#9662;</span>
+                    </th>
+                    <th id="sort-survey_team_id">كود الطاقم المساحي <span class="sort-icon">&#9662;</span></th>
+                    <th>الذهاب إلى محضر الارشاد</th>
+                </tr>
+            </thead>
+            <tbody id="dataTableBody">
+                <!-- سيتم ملء هذا الجزء ديناميكيًا -->
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button id="prevButton" onclick="changePage(-1) ">السابق</button>
+            <button id="nextButton" onclick="changePage(1)">التالي</button>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 3;
+        let sortColumn = 'requestnumber'; // العمود الافتراضي للترتيب
+        let sortOrder = 'asc'; // ترتيب افتراضي تصاعدي
+
+        function fetchData(page = currentPage, searchQuery = '', sortBy = sortColumn, order = sortOrder) {
+            const token = localStorage.getItem('token');
+            const url = `https://guid-report-new-v5.vercel.app/api/listdata?page=${page}&sort=${sortBy}&order=${order}&search=${encodeURIComponent(searchQuery)}`;
+            // console.log('Fetching URL:', url); // Debug: طباعة الرابط للتحقق
+            fetch(url, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.data && Array.isArray(data.data)) {
+                        populateTable(data.data);
+                        updatePagination(data.pagination);
+                    } else {
+                        console.error('Unexpected response format:', data);
+                        alert('برجاء المحاولة مرة أخرى.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('لا يوجد بيانات مطابقة للبحث.');
+                });
+        }
+
+        function changePage(direction) {
+            const newPage = currentPage + direction;
+            // تحقق من أن الرقم الجديد للصفحة ضمن النطاق الصالح
+            if (newPage > 0) {
+                currentPage = newPage;
+                fetchData(currentPage, '', sortColumn, sortOrder);
+            }
+        }
+
+        function populateTable(data) {
+            const tableBody = document.getElementById('dataTableBody');
+            tableBody.innerHTML = ''; // مسح المحتويات السابقة
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+
+row.innerHTML = `
+            <td id="requestnumber">${item.requestnumber}</td>
+            <td id="requestid" style="display: none;">${item.requestid}</td>
+            <td id="arabicfullname">${item.arabicfullname}</td>
+            <td id="area" style="display: none;">${item.area} ${item.areatype}</td>
+            <td id="companyname">${item.companyname}</td>
+            <td id="sec" style="display: none;">${item.regionid}</td>
+            <td id="ssec" style="display: none;">${item.districtid}</td>
+            <td id="secText">${item.sec}</td>
+            <td id="ssecText">${item.ssec}</td>
+            <td id="fullname" style="display: none;">${item.fullname}</td>
+            <td id="survey_team_id">${item.survey_team_id}</td>
+            <td>
+                <button onclick="navigateToGuidnes(this.parentElement.parentElement);" class="btn-guidance">
+                    <i class="fa fa-arrow-right"></i> الذهاب الي
+                </button>
+            </td>
+        `;
+                tableBody.appendChild(row);
+            });
+        }
+        function updatePagination(pagination) {
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+
+            prevButton.classList.toggle('disabled', pagination.currentPage -= 1);
+            nextButton.classList.toggle(pagination.currentPage += 1);
+
+
+        }
+
+        function handleSort(column) {
+            if (sortColumn === column) {
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortOrder = 'asc';
+            }
+            fetchData(currentPage, document.getElementById('searchInput').value, sortColumn, sortOrder);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.data-table th').forEach(th => {
+                th.addEventListener('click', () => {
+                    handleSort(th.id.replace('sort-', ''));
+                });
+            });
+
+            document.getElementById('searchInput').addEventListener('input', function () {
+                fetchData(currentPage, this.value, sortColumn, sortOrder);
+            });
+
+            // Attach event listeners to pagination buttons
+            document.getElementById('prevButton').addEventListener('click', () => changePage(-1));
+            document.getElementById('nextButton').addEventListener('click', () => changePage(1));
+
+            // Fetch data when the page loads
+            fetchData(currentPage, '', "requestnumber", "asc");
+        });
+
+        function navigateToGuidnes(row) {
+            const requestNumber = row.querySelector('td:nth-child(1)').textContent;
+            const requestid = row.querySelector('td:nth-child(2)').textContent;
+            const requesterName = row.querySelector('td:nth-child(3)').textContent;
+            const areaRequest = row.querySelector('td:nth-child(4)').textContent;
+            const companyName = row.querySelector('td:nth-child(5)').textContent;
+            const sector = row.querySelector('td:nth-child(6)').textContent;
+            const ssec = row.querySelector('td:nth-child(7)').textContent;
+            const secText = row.querySelector('td:nth-child(8)').textContent;
+            const ssecText = row.querySelector('td:nth-child(9)').textContent;
+            const fullname = row.querySelector('td:nth-child(10)').textContent;
+            const surveyTeamId = row.querySelector('td:nth-child(11)').textContent;
+
+            // تخزين البيانات في localStorage
+            localStorage.setItem('requestNumber', requestNumber);
+            localStorage.setItem('requestid', requestid);
+            localStorage.setItem('requesterName', requesterName);
+            localStorage.setItem('areaRequest', areaRequest);
+            localStorage.setItem('companyName', companyName);
+            localStorage.setItem('sector', sector);
+            localStorage.setItem('ssec', ssec);
+            localStorage.setItem('secText', secText);
+            localStorage.setItem('ssecText', ssecText)
+            localStorage.setItem('fullname', fullname);
+            localStorage.setItem('surveyTeamId', surveyTeamId);
+
+            // الانتقال إلى صفحة guidnes.html
+            window.location.href = 'guidnes.html';
+        }
+    </script>
+
+</body>
+
+</html>

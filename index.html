@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>محضر إرشاد رفع مساحي</title>
+    <meta name="theme-color" content="#ff0000">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/images/favicon.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: right;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-size: 20px;
+            direction: rtl;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 8px;
+            direction: rtl;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 20px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-msg {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: 100%;
+            display: none;
+            /* مخفي حتى يتم تسجيل الدخول */
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #guidnes-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* زر تثبيت التطبيق */
+        #installBtn {
+            padding: 10px;
+            background-color: #1f5f13;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: none;
+            /* مخفي افتراضيًا */
+        }
+
+        #installBtn:hover {
+            background-color: #0056b3;
+        }
+
+        .containerImg {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .imgs {
+            width: 150px;
+            height: 130px;
+        }
+
+      
+
+        footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40px !important;
+            background-color: #d9d9d9;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 0;
+           
+        }
+
+        footer h4 {
+
+            /* align-items: center; */
+            color: black;
+        }
+
+        footer img {
+            width: 80px;
+            height: 50px;
+            margin-right: 2vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main-container">
+        <div class="login-container" id="login-container">
+            <div class="containerImg">
+                <img class="imgs" src="./images/icons-192.png" alt="">
+            </div>
+            <h2>تسجيل الدخول</h2>
+            <form id="login-form">
+                <label for="username">اسم المستخدم:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">كلمة المرور:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="button" id="submitBtn">تسجيل الدخول</button>
+                <div id="error-msg" class="error-msg"></div>
+            </form>
+            <button id="installBtn">تثبيت التطبيق</button>
+        </div>
+        <div class="iframe-container" id="iframe-container">
+            <iframe id="guidnes-frame"></iframe>
+        </div>
+        <footer>
+            <img src="./images/edge-prologo.png" alt="">
+            <h4>جميع الحقوق محفوظة لشركة ايدج برو لسنة 2024</h4>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', function () {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            fetch('https://guid-report-new-v5.vercel.app/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.token) {
+                        localStorage.setItem('token', data.token);
+                        // console.log('Token stored:', data.token);
+                        alert(data.message); // عرض رسالة النجاح من الاستجابة
+                        showGuidnesContent();
+                    } else {
+                        errorMsg.textContent = data.message || 'اسم المستخدم أو كلمة المرور غير صحيحة.';
+                    }
+                })
+                .catch(error => {
+                    errorMsg.textContent = 'حدث خطأ أثناء الاتصال بالخادم. حاول مرة أخرى لاحقًا.';
+                    console.error('Error:', error);
+                });
+        });
+
+        function showGuidnesContent() {
+            const loginContainer = document.getElementById('login-container');
+            const iframeContainer = document.getElementById('iframe-container');
+            loginContainer.style.display = 'none';
+            iframeContainer.style.display = 'block';
+
+            const token = localStorage.getItem('token');
+            if (token) {
+                document.getElementById('guidnes-frame').src = 'guidnesList.html';
+            } else {
+                console.error('Token is missing');
+            }
+        }
+
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+
+            installBtn.addEventListener('click', () => {
+                installBtn.style.display = 'none';
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            });
+        });
+
+        window.addEventListener('appinstalled', (event) => {
+            console.log('PWA installed');
+        });
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').then(function (registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }, function (error) {
+                    console.log('Service Worker registration failed:', error);
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

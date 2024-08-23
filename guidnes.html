@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>محضر إرشاد رفع مساحي</title>
+    <meta name="theme-color" content="#ff0000" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/images/favicon.ico">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-title">
+                <p class="titlee">المركز التكنولوجي <br> للتسجيل المساحي العقاري</p>
+            </div>
+            <div class="header-text">
+                <h2>محضر إرشاد رفع مساحي</h2>
+            </div>
+            <div class="header-logo">
+                <img src="images/icons-192.png" alt="Logo" style="width: 100%;">
+            </div>
+        </div>
+        <form id="fileUploadForm" enctype="multipart/form-data">
+
+            <div class="content">
+                <div class="left-section">
+                    <div class="form-section">
+                        <!-- Form Fields -->
+                        <form id="dataForm">
+                            <div class="form-group">
+                                <label for="request-number"> رقم الطلب:</label>
+                                <input type="text" id="request-number" name="request-number" readonly>
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <label for="requestid"> كود الطلب:</label>
+                                <input type="text" id="requestid" name="requestid" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="requester-name">اسم مقدم الطلب:</label>
+                                <input type="text" id="requester-name" name="requester-name" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="applicant-name"> اسم صاحب الطلب:</label>
+                                <input type="text" id="applicant-name" name="applicant-name">
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <label for="sector">كود القسم:</label>
+                                <input type="text" id="sector" name="sector">
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <label for="ssec">كود الشياخة:</label>
+                                <input type="text" id="ssec" name="ssec">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="secText">القسم:</label>
+                                <input type="text" id="secText" name="secText">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ssecText">الشياخة:</label>
+                                <input type="text" id="ssecText" name="ssecText">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="survey_type">النوع بعد الرفع:</label>
+                                <select id="survey_type" name="survey_type">
+                                    <option value="">اختر</option>
+                                    <option value=0>وحدة</option>
+                                    <option value=1>ارض مقاسة بالمتر</option>
+                                    <option value=2>ارض مقاسة بالفدان</option>
+                                    <option value=3>مبني</option>
+                                    <option value=4>جراج</option>
+                                    <option value=5>مبنى بحديقة</option>
+                                    <option value=10>وحدة دوبلكس</option>
+                                    <option value=13>شالية</option>
+                                    <option value=15>فيلا</option>
+                                    <option value=18>وحدة تربليكس</option>
+                                    <option value=19>وحدة كوادريبلكس</option>
+                                    <option value=24>وحدة بحديقة</option>
+                                </select>
+                            </div>
+
+
+
+                            <div id="building-fields">
+                                <div class="form-group">
+                                    <label for="parcel-number">رقم العقار:</label>
+                                    <input type="text" id="parcel-number" name="parcel-number">
+                                </div>
+                                <div class="form-group">
+                                    <label for="plot-number">رقم القطعة:</label>
+                                    <input type="text" id="plot-number" name="plot-number">
+                                </div>
+                                <div class="form-group">
+                                    <label for="plan-number">رقم الحوض:</label>
+                                    <input type="text" id="plan-number" name="plan-number">
+                                </div>
+                            </div>
+
+                            <div id="apartment-fields">
+                                <div class="form-group">
+                                    <label for="parcel-number">رقم العقار:</label>
+                                    <input type="text" id="parcel-number" name="parcel-number">
+                                </div>
+                                <div class="form-group">
+                                    <label for="floor_number">رقم الدور رقمياً:</label>
+                                    <input type="number" id="floor_number" name="floor_number">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="floor_number_text">رقم الدور كتابياً:</label>
+                                    <input type="text" id="floor_number_text" name="floor_number_text">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="actual_apartment_number">رقم الوحدة فعلياً:</label>
+                                    <input type="text" id="actual_apartment_number" name="actual_apartment_number">
+                                </div>
+                                <div class="form-group">
+                                    <label for="survey_apartment_number">رقم الوحدة مساحياً:</label>
+                                    <input type="number" id="survey_apartment_number" name="survey_apartment_number">
+                                </div>
+                            </div>
+
+
+                            <div id="land-fields">
+                                <div class="form-group">
+                                    <label for="plot-number">رقم القطعة:</label>
+                                    <input type="text" id="plot-number" name="plot-number">
+                                </div>
+                                <div class="form-group">
+                                    <label for="plan-number">رقم الحوض:</label>
+                                    <input type="text" id="plan-number" name="plan-number">
+                                </div>
+                            </div>
+
+                            <br>
+
+
+                            <div class="form-group">
+                                <label for="usage_building">الإستخدام حسب نوع الطلب:</label>
+                                <select id="usage_building" name="usage_building">
+                                    <option value=''>اختر</option>
+                                    <option value=1>سكنى</option>
+                                    <option value=2>تجارى</option>
+                                    <option value=3>ادارى</option>
+                                    <option value=4>سكنى تجارى</option>
+                                    <option value=5>سكنى ادارى</option>
+                                    <option value=6>تعليمى</option>
+                                    <option value=7>ترفيهى</option>
+                                    <option value=8>ارض مقاسة بالمتر</option>
+                                    <option value=9>ارض مقاسة بالفدان</option>
+                                    <option value=10>جراج خاص</option>
+                                    <option value=11>ارض زراعية</option>
+                                    <option value=12>جراج تجارى</option>
+                                    <option value=13>ادارى تجارى</option>
+                                    <option value=14>مخزن</option>
+                                    <option value=15>مصنع</option>
+                                </select>
+                            </div>
+
+                            <fieldset>
+                                <table>
+                                    <tr>
+                                        <td><label for="north_border">الحد البحري:</label></td>
+                                        <td><input type="text" id="north_border" name="north_border"></td>
+                                        <td><label for="north_border-length">طول الحد البحري:</label></td>
+                                        <td><input type="number" id="north_border-length" name="north_border-length">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="east_border">الحد الشرقي:</label></td>
+                                        <td><input type="text" id="east_border" name="east_border"></td>
+                                        <td><label for="east_border-length">طول الحد الشرقي:</label></td>
+                                        <td><input type="number" id="east_border-length" name="east_border-length"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="south_border">الحد القبلي:</label></td>
+                                        <td><input type="text" id="south_border" name="south_border"></td>
+                                        <td><label for="south_border-length">طول الحد القبلي:</label></td>
+                                        <td><input type="number" id="south_border-length" name="south_border-length">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="west_border">الحد الغربي:</label></td>
+                                        <td><input type="text" id="west_border" name="west_border"></td>
+                                        <td><label for="west_border-length">طول الحد الغربي:</label></td>
+                                        <td><input type="number" id="west_border-length" name="west_border-length"></td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <br>
+                            <div class="form-group coordinates">
+                                <label for="latitude">خط العرض (X):</label>
+                                <input type="text" id="latitude" name="latitude" readonly>
+                                <label for="longitude">خط الطول (Y):</label>
+                                <input type="text" id="longitude" name="longitude" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">العنوان طبقاً للأحداثيات:</label>
+                                <textarea id="address" name="address" readonly></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="detailed_address">العنوان تفصيلياً:</label>
+                                <textarea id="detailed_address" name="detailed_address"></textarea>
+                            </div>
+                            <div class="form-group coordinates">
+                                <label for="area_request">المساحة طبقاً للطلب:</label>
+                                <input type="text" id="area_request" name="area_request" readonly>
+                                <label for="area_survey">المساحة طبقاً للعقد:</label>
+                                <input type="text" id="area_survey" name="area_survey">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">وصف العقار:</label>
+                                <textarea id="description" name="description"></textarea>
+                            </div>
+
+                            <div class="declaration">
+                                <label for="iqrar_name" class="declaration-text">أقر أنا /</label>
+                                <input type="text" id="iqrar_name" name="iqrar_name">
+                                <label for="usage" class="declaration-text">مقدم الطلب بأني قمت بالإرشاد عن حدود</label>
+                                <select id="usage" name="usage">
+                                    <option value="">اختر</option>
+                                    <option value=0>وحدة</option>
+                                    <option value=1>ارض مقاسة بالمتر</option>
+                                    <option value=2>ارض مقاسة بالفدان</option>
+                                    <option value=3>مبني</option>
+                                    <option value=4>جراج</option>
+                                    <option value=5>مبنى بحديقة</option>
+                                    <option value=10>وحدة دوبلكس</option>
+                                    <option value=13>شالية</option>
+                                    <option value=15>فيلا</option>
+                                    <option value=18>وحدة تربليكس</option>
+                                    <option value=19>وحدة كوادريبلكس</option>
+                                    <option value=24>وحدة بحديقة</option>
+                                </select>
+                                <label class="declaration-text">لتقديمها لمأمورية الشهر العقاري.</label>
+                            </div>
+                            <div class="public_rols">
+                                <h4>قواعد عامة</h4>
+                                <ol>
+                                    <li>يجب الإطلاع على جميع البيانات من المواطن قبل التوقيع ولا يجب التوقيع على المحضر
+                                        فارغ.
+                                    </li>
+                                    <li>عدم دفع أي رسوم إضافية لأطقم الرفع المساحي.</li>
+                                    <li>المواطن مسؤول مسؤولية كاملة عن جميع بيانات محضر الإرشاد.</li>
+                                    <li>تم تنفيذ الرفع المساحي بإرشاد المواطن مقدم الطلب دون أدنى مسؤولية على أطقم الرفع
+                                        المساحي.</li>
+                                    <li>تم تنفيذ الرفع المساحي دون إجراء بحث ملكية ولا يعتبر سنداً للملكية ولايستخدم إلا
+                                        في
+                                        الغرض المخصص له.</li>
+                                    <li>يرجي التأكد من نوع الطلب جيداً لأنة لايمكن تغير نوع الطلب اطلاقاً بعد التوقيع
+                                        علي محضر الارشاد.</li>
+                                    <li>يرجى التأكد من اسم مقدم الطلب لأنة سوف يتم طباعة الشهادة بأسم مقدم الطلب وبعد
+                                        التوقيع علي محضر الارشاد لايمكن تغير الاسم اطلاقاً</li>
+                                </ol>
+                                <p>يرجى التأكد من هوية القائم بأعمال الرفع المساحي.</p>
+                                <div class="form-container-footer">
+                                    <fieldset>
+                                        <h3>بيانات مقدم الطلب</h3>
+                                        <table>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div class="form-group">
+                                                        <label>توقيع مقدم الطلب:</label>
+                                                        <canvas id="signature-pad-applicant"
+                                                            style="border: 1px solid #000;"></canvas>
+                                                        <div class="tools">
+                                                            <button type="button" id="confirm-signature-applicant">تأكيد
+                                                                التوقيع</button>
+                                                            <button type="button"
+                                                                onclick="clearSignature('applicant')">مسح</button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>تقييم الطاقم المساحي:</th>
+                                                <td colspan="3">
+                                                    <label><input type="radio" name="evaluation" value="ضعيف">
+                                                        ضعيف</label>
+                                                    <label><input type="radio" name="evaluation" value="جيد">
+                                                        جيد</label>
+                                                    <label><input type="radio" name="evaluation" value="جيد جداً"> جيد
+                                                        جداً</label>
+                                                    <label><input type="radio" name="evaluation" value="ممتاز">
+                                                        ممتاز</label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <h3>بيانات القائم بالرفع المساحي</h3>
+                                        <table>
+                                            <tr>
+                                                <th>اسم القائم بالرفع</th>
+                                                <td><input type="text" class="small-input" name="surveyor-name"></td>
+                                                <th>كود الطاقم</th>
+                                                <td><input type="text" class="" name="company-code" readonly></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div class="form-group">
+                                                        <label>توقيع القائم بالرفع:</label>
+                                                        <canvas id="signature-pad-surveyor"
+                                                            style="border: 1px solid #000;"></canvas>
+                                                        <div class="tools">
+                                                            <button type="button" id="confirm-signature-surveyor">تأكيد
+                                                                التوقيع</button>
+                                                            <button type="button"
+                                                                onclick="clearSignature('surveyor')">مسح</button>
+                                                        </div>
+
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>التاريخ</th>
+                                                <td><input type="text" class="small-input" name="date" id="date-input"
+                                                        readonly></td>
+                                            </tr>
+                                        </table>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="right-section">
+                    <div class="form-group">
+                        <label for="description_nearest_sign">التوصيف من حيث اقرب علامة مميزة:</label>
+                        <input type="text" id="description_nearest_sign" name="description_nearest_sign">
+                    </div>
+                    <div class="form-group">
+                        <label for="map">كروكي:</label>
+                        <div class="map">
+                            <canvas id="map-canvas"></canvas>
+                        </div>
+                        <div class="tools-operation">
+                            <button type="button" onclick="startDrawing()">ابدأ الرسم</button>
+                            <button id="endDrawingButton" type="button" onclick="endDrawing()">إنهاء الرسم</button>
+                            <button type="button" id="deleteObjectButton">حذف</button>
+                            <button type="button" onclick="clearCanvas()">مسح الكل</button>
+                            <br>
+                            <div class="camera-container">
+                                <button type="button" id="openCameraPopup">فتح الكاميرا والتقاط الصورة</button>
+
+                                <div id="error-message" class="error"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- الجزء الخاص برفع الملفات -->
+                    <!-- <div class="file-group">
+                        <h3>تحميل المرفقات</h3>
+                        <div class="kroqui-image-div">
+                            <label for="kroqui-image">رفع صورة الرسم الكروكي</label>
+                            <input type="file" id="kroqui-image" name="kroqui-image">
+                        </div>
+
+                        <div class="building-image-div">
+                            <label for="building-image">رفع صورة المبني</label>
+                            <input type="file" id="building-image" name="building-image">
+                        </div>
+
+                        <div class="applicant-signature-div">
+                            <label for="applicant-signature">رفع صورة توقيع مقدم الطلب</label>
+                            <input type="file" id="applicant-signature" name="applicant-signature">
+                        </div>
+
+                        <div class="surveyor-signature-div">
+                            <label for="surveyor-signature">رفع صورة توقيع القادم بالرفع المساحي</label>
+                            <input type="file" id="surveyor-signature" name="surveyor-signature">
+                        </div>
+                    </div>
+                    <button type="submit">رفع الملفات</button>-->
+                    <div class="btns">
+                        <!-- Add Save Button -->
+                        <button type="button" id="send-data">إرسال البيانات</button>
+                        <button onclick="history.back()">عودة</button>
+                    </div>
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+    </div>
+    </div>
+    <!-- signature_pad -->
+    <script src="/signature_pad.min.js"></script>
+    <!-- moment.js -->
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <!-- Fabric.js -->
+    <script src="fabric.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+
+</html>
